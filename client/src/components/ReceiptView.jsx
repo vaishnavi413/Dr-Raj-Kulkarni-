@@ -21,7 +21,7 @@ const ReceiptView = forwardRef(({ data }, ref) => {
         </div>
         
         <div style={{ width: '50%', textAlign: 'right' }}>
-          <h1 style={{ fontSize: '32px', margin: '0 0 15px', color: '#000' }}>Doctor Receipt</h1>
+          {/* Heading removed per user request */}
           <table style={{ width: '100%', fontSize: '14px' }}>
             <tbody>
               <tr><td style={{ fontWeight: 'bold', padding: '3px 0' }}>Receipt Number:</td><td style={{ padding: '3px 0' }}>{data.receiptNo}</td></tr>

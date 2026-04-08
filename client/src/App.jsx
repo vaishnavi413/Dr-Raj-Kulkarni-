@@ -30,7 +30,7 @@ const App = () => {
   
   const handlePrint = useReactToPrint({
     content: () => receiptRef.current,
-    documentTitle: `Receipt-${formData.receiptNo}`,
+    documentTitle: `${formData.receiptNo}-${formData.patientName}`,
     onAfterPrint: () => {
       // Clear form and fetch next ID automatically
       setFormData({
@@ -225,7 +225,7 @@ const App = () => {
               <Save size={18} /> {loading ? 'Saving...' : (editingId ? 'Update Receipt' : 'Save Receipt')}
             </button>
             <button type="button" className="btn btn-primary" style={{ background: 'var(--primary)' }} onClick={handlePrint} disabled={!formData.patientName}>
-              <Printer size={18} /> Print Receipt
+              <Printer size={18} /> Download Receipt
             </button>
           </div>
         </form>
