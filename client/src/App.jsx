@@ -15,9 +15,12 @@ const App = () => {
     gender: 'Male',
     services: {
       consultation: 0,
+      acupuncture: 0,
+      nutritionChart: 0,
       therapy: 0,
       package: 0
     },
+    treatmentFor: '',
     total: 0
   });
   const [editingId, setEditingId] = useState(null);
@@ -39,7 +42,8 @@ const App = () => {
         patientName: '',
         age: '',
         gender: 'Male',
-        services: { consultation: 0, therapy: 0, package: 0 },
+        services: { consultation: 0, acupuncture: 0, nutritionChart: 0, therapy: 0, package: 0 },
+        treatmentFor: '',
         total: 0
       });
       setEditingId(null);
@@ -199,16 +203,33 @@ const App = () => {
           <h3>Services Availed</h3>
           <div style={{ background: 'rgba(255,255,255,0.5)', padding: '1.5rem', borderRadius: '15px', marginBottom: '2rem' }}>
             <div className="input-group">
-              <label>Consultation & Personalised Healing Protocol (₹)</label>
+              <label>Consultation fees (₹)</label>
               <input type="number" name="consultation" value={formData.services.consultation} onChange={handleServiceChange} min="0" placeholder="0" />
             </div>
             <div className="input-group">
-              <label>Therapy / Sessions (₹)</label>
+              <label>Acupuncture (₹)</label>
+              <input type="number" name="acupuncture" value={formData.services.acupuncture} onChange={handleServiceChange} min="0" placeholder="0" />
+            </div>
+            <div className="input-group">
+              <label>Functional medicine nutrition chart (₹)</label>
+              <input type="number" name="nutritionChart" value={formData.services.nutritionChart} onChange={handleServiceChange} min="0" placeholder="0" />
+            </div>
+            <div className="input-group">
+              <label>Therapy session (₹)</label>
               <input type="number" name="therapy" value={formData.services.therapy} onChange={handleServiceChange} min="0" placeholder="0" />
             </div>
             <div className="input-group">
-              <label>Package (₹)</label>
+              <label>Integrative Package (₹)</label>
               <input type="number" name="package" value={formData.services.package} onChange={handleServiceChange} min="0" placeholder="0" />
+            </div>
+
+            <div className="input-group" style={{ marginTop: '1rem' }}>
+              <label>Treatment for:</label>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span>Treatment for - </span>
+                <input type="text" name="treatmentFor" value={formData.treatmentFor} onChange={handleInputChange} placeholder="e.g. chronic" style={{ flex: 1, borderBottom: '1px solid #ccc', borderTop: 'none', borderLeft: 'none', borderRight: 'none', background: 'transparent', borderRadius: 0, padding: '5px' }} />
+                <span> back pain & digestive issues</span>
+              </div>
             </div>
             
             <div style={{ marginTop: '1.5rem', paddingTop: '1rem', borderTop: '2px dashed var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -218,7 +239,7 @@ const App = () => {
           </div>
 
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
-            <button type="button" className="btn" style={{ background: '#e2e8f0', color: 'var(--text)' }} onClick={() => { setEditingId(null); setFormData({ receiptNo: '', date: new Date().toISOString().split('T')[0], patientName: '', age: '', gender: 'Male', services: { consultation: 0, therapy: 0, package: 0 }, total: 0 }); fetchLatestNo(); }}>
+            <button type="button" className="btn" style={{ background: '#e2e8f0', color: 'var(--text)' }} onClick={() => { setEditingId(null); setFormData({ receiptNo: '', date: new Date().toISOString().split('T')[0], patientName: '', age: '', gender: 'Male', services: { consultation: 0, acupuncture: 0, nutritionChart: 0, therapy: 0, package: 0 }, treatmentFor: '', total: 0 }); fetchLatestNo(); }}>
               <Undo2 size={18} /> {editingId ? 'Cancel Edit' : 'Reset'}
             </button>
             <button type="submit" className="btn btn-primary" disabled={loading}>
