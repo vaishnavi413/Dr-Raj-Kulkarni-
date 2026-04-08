@@ -1,0 +1,10 @@
+{
+  "name": "doctor-billing-root",
+  "private": true,
+  "scripts": {
+    "install:client": "npm install --prefix client",
+    "install:server": "npm install --prefix server",
+    "build:client": "npm run build --prefix client",
+    "start:server": "node server/server.js"
+  }
+}
