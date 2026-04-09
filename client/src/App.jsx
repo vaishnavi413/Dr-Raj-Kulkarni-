@@ -223,13 +223,9 @@ const App = () => {
               <input type="number" name="package" value={formData.services.package} onChange={handleServiceChange} min="0" placeholder="0" />
             </div>
 
-            <div className="input-group" style={{ marginTop: '1rem' }}>
-              <label>Treatment for:</label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <span>Treatment for - </span>
-                <input type="text" name="treatmentFor" value={formData.treatmentFor} onChange={handleInputChange} placeholder="e.g. chronic" style={{ flex: 1, borderBottom: '1px solid #ccc', borderTop: 'none', borderLeft: 'none', borderRight: 'none', background: 'transparent', borderRadius: 0, padding: '5px' }} />
-                <span> back pain & digestive issues</span>
-              </div>
+            <div className="input-group">
+              <label>Treatment For</label>
+              <input type="text" name="treatmentFor" value={formData.treatmentFor} onChange={handleInputChange} placeholder="Enter reason for treatment" />
             </div>
             
             <div style={{ marginTop: '1.5rem', paddingTop: '1rem', borderTop: '2px dashed var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

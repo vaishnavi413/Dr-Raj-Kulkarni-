@@ -35,8 +35,9 @@ const ReceiptView = forwardRef(({ data }, ref) => {
   return (
     <div ref={ref} style={{ width: '210mm', minHeight: '297mm', padding: '30mm 20mm', margin: '0 auto', background: 'white', color: '#333', fontFamily: '"Arial", sans-serif' }}>
 
+      {/* Header Section */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '30px' }}>
-        <div style={{ width: '65%', display: 'flex', alignItems: 'center', gap: '20px' }}>
+        <div style={{ width: '60%', display: 'flex', alignItems: 'center', gap: '20px' }}>
           <img src="/logo.jpeg" alt="Doctor Logo" style={{ width: '85px', height: '85px', objectFit: 'contain' }} />
           <div>
             <h1 style={{ color: primaryColor, margin: 0, fontSize: '28px', letterSpacing: '1px', whiteSpace: 'nowrap', fontWeight: 'bold' }}>DR. RAJ KULKARNI</h1>
@@ -46,7 +47,6 @@ const ReceiptView = forwardRef(({ data }, ref) => {
         </div>
 
         <div style={{ width: '35%', textAlign: 'right' }}>
-          {/* Heading removed per user request */}
           <table style={{ width: '100%', fontSize: '13px' }}>
             <tbody>
               <tr><td style={{ fontWeight: 'bold', padding: '3px 0' }}>Receipt Number:</td><td style={{ padding: '3px 0' }}>{data.receiptNo}</td></tr>
@@ -60,23 +60,20 @@ const ReceiptView = forwardRef(({ data }, ref) => {
       {/* Addresses Section */}
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '30px', fontSize: '14px' }}>
         <div style={{ width: '45%' }}>
-          <h3 style={{ borderBottom: `2px solid ${primaryColor}`, paddingBottom: '5px', marginBottom: '10px' }}></h3>
+          <h3 style={{ borderBottom: `2px solid ${primaryColor}`, paddingBottom: '5px', marginBottom: '10px' }}>Clinic Details</h3>
           <p style={{ margin: '3px 0', fontWeight: 'bold' }}>Integrative Healing Center</p>
-          <p style={{ margin: '3px 0' }}>Acupuncture | Functional Medicine</p>
-          <p style={{ margin: '3px 0' }}>Pain and Lifestyle Disorders Management</p>
-          <p style={{ margin: '3px 0' }}>Viman Nagar, Pune - 411014</p>
-          <p style={{ margin: '3px 0' }}>Contact: 9767995655</p>
+          <p style={{ margin: '3px 0', color: '#444' }}>Acupuncture | Functional Medicine</p>
+          <p style={{ margin: '3px 0', color: '#444' }}>Viman Nagar, Pune - 411014</p>
+          <p style={{ margin: '3px 0', fontWeight: 'bold' }}>Contact: 9767995655</p>
         </div>
 
         <div style={{ width: '45%' }}>
-          <h3 style={{ borderBottom: `2px solid ${primaryColor}`, paddingBottom: '5px', marginBottom: '10px' }}></h3>
+          <h3 style={{ borderBottom: `2px solid ${primaryColor}`, paddingBottom: '5px', marginBottom: '10px' }}>Patient Details</h3>
           <p style={{ margin: '3px 0', fontWeight: 'bold' }}>{data.patientName}</p>
           <p style={{ margin: '3px 0' }}>Age: {data.age}</p>
           <p style={{ margin: '3px 0' }}>Gender: {data.gender}</p>
         </div>
       </div>
-
-
 
       {/* Services Table */}
       <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '20px', fontSize: '13px' }}>
@@ -146,13 +143,22 @@ const ReceiptView = forwardRef(({ data }, ref) => {
         <p style={{ margin: 0 }}><strong>Total in words: </strong> {numberToWords(data.total)}</p>
       </div>
 
-      {/* Treatment Info */}
-      <div style={{ marginBottom: '25px', fontSize: '14px' }}>
-        <p style={{ margin: 0 }}>
-          <strong>Treatment for - </strong>
-          <span style={{ borderBottom: '1px solid #333', minWidth: '100px', display: 'inline-block', padding: '0 10px' }}>{data.treatmentFor || '________'}</span>
-          <strong> back pain & digestive issues</strong>
-        </p>
+      {/* Treatment Section - Styled to match the input fields requested */}
+      <div style={{ marginBottom: '35px' }}>
+        <p style={{ margin: '0 0 8px 5px', fontSize: '13px', fontWeight: 'bold', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Treatment For</p>
+        <div style={{ 
+          background: '#f8fafc', 
+          border: '1px solid #e2e8f0', 
+          borderRadius: '12px', 
+          padding: '15px', 
+          minHeight: '100px',
+          fontSize: '15px'
+        }}>
+          <span style={{ color: '#1e293b', fontWeight: '500' }}>{data.treatmentFor}</span>
+          {/* subtle writing spaces for manual notes */}
+          <div style={{ borderBottom: '1px solid #e2e8f0', marginTop: '22px', width: '100%', opacity: 0.5 }}></div>
+          <div style={{ borderBottom: '1px solid #e2e8f0', marginTop: '22px', width: '100%', opacity: 0.5 }}></div>
+        </div>
       </div>
 
       {/* Scan to Pay & Signatures */}
