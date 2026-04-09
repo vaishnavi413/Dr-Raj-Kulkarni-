@@ -35,18 +35,17 @@ const ReceiptView = forwardRef(({ data }, ref) => {
   return (
     <div ref={ref} style={{ width: '210mm', minHeight: '297mm', padding: '30mm 20mm', margin: '0 auto', background: 'white', color: '#333', fontFamily: '"Arial", sans-serif' }}>
 
-      {/* Header Section */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '30px' }}>
-        <div style={{ width: '50%', display: 'flex', alignItems: 'center', gap: '15px' }}>
-          <img src="/logo.jpeg" alt="Doctor Logo" style={{ width: '80px', height: '80px', objectFit: 'contain' }} />
+        <div style={{ width: '65%', display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <img src="/logo.jpeg" alt="Doctor Logo" style={{ width: '85px', height: '85px', objectFit: 'contain' }} />
           <div>
-            <h2 style={{ color: primaryColor, margin: 0, fontSize: '24px', letterSpacing: '1px' }}>DR. RAJ KULKARNI</h2>
-            <p style={{ margin: '5px 0 0', fontSize: '12px', color: '#666' }}>BNYS, FSS</p>
-            <p style={{ margin: '5px 0 0', fontSize: '12px', color: '#666' }}>Reg no. 0762/TNBIM/2007</p>
+            <h1 style={{ color: primaryColor, margin: 0, fontSize: '28px', letterSpacing: '1px', whiteSpace: 'nowrap', fontWeight: 'bold' }}>DR. RAJ KULKARNI</h1>
+            <p style={{ margin: '5px 0 0', fontSize: '13px', color: '#666', fontWeight: 'bold' }}>BNYS, FSS</p>
+            <p style={{ margin: '2px 0 0', fontSize: '12px', color: '#666' }}>Reg no. 0762/TNBIM/2007</p>
           </div>
         </div>
 
-        <div style={{ width: '50%', textAlign: 'right' }}>
+        <div style={{ width: '35%', textAlign: 'right' }}>
           {/* Heading removed per user request */}
           <table style={{ width: '100%', fontSize: '13px' }}>
             <tbody>
