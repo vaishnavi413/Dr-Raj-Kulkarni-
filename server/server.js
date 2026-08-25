@@ -6,7 +6,8 @@ const connectDB = require('./config/db');
 const receiptRoutes = require('./routes/receiptRoutes');
 const sendWeeklyBackup = require('./utils/backup');
 
-dotenv.config();
+const path = require('path');
+dotenv.config({ path: path.join(__dirname, '.env') });
 connectDB();
 
 const app = express();

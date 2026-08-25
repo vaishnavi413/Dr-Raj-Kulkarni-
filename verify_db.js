@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const path = require('path');
 
-dotenv.config({ path: path.join(__dirname, '../server/.env') });
+dotenv.config({ path: path.join(__dirname, 'server/.env') });
 
 const verify = async () => {
     try {
@@ -10,14 +10,14 @@ const verify = async () => {
         console.log('Connected to DB:', mongoose.connection.name);
         const collections = await mongoose.connection.db.listCollections().toArray();
         console.log('Collections:', collections.map(c => c.name));
-        
-        const Receipt = mongoose.model('Receipt', new mongoose.Schema({}), 'Dr_Ra_Kulkarni_receipt');
-        const count = await Receipt.countDocuments();
-        console.log('Receipts in Dr_Ra_Kulkarni_receipt:', count);
-        
-        const all = await Receipt.find().limit(5);
-        console.log('Latest 5 receipts:', all);
-        
+
+        for (const col of collections) {
+            const count = await mongoose.connection.db.collection(col.name).countDocuments();
+            console.log(`Collection '${col.name}': ${count} documents`);
+            const docs = await mongoose.connection.db.collection(col.name).find().limit(25).toArray();
+            console.log(`Sample docs from '${col.name}':`, JSON.stringify(docs, null, 2));
+        }
+
         process.exit(0);
     } catch (err) {
         console.error(err);

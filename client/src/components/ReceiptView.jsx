@@ -85,41 +85,36 @@ const ReceiptView = forwardRef(({ data }, ref) => {
           </tr>
         </thead>
         <tbody>
-          {data.services.consultation > 0 && (
-            <tr style={{ backgroundColor: lightBg, borderBottom: '1px solid #eee' }}>
-              <td style={{ padding: '10px' }}>Consultation fees</td>
-              <td style={{ padding: '10px', textAlign: 'center' }}>1</td>
-              <td style={{ padding: '10px', textAlign: 'right' }}>{data.services.consultation.toFixed(2)}</td>
-            </tr>
-          )}
-          {data.services.acupuncture > 0 && (
-            <tr style={{ backgroundColor: 'white', borderBottom: '1px solid #eee' }}>
-              <td style={{ padding: '10px' }}>Acupuncture</td>
-              <td style={{ padding: '10px', textAlign: 'center' }}>1</td>
-              <td style={{ padding: '10px', textAlign: 'right' }}>{data.services.acupuncture.toFixed(2)}</td>
-            </tr>
-          )}
-          {data.services.nutritionChart > 0 && (
-            <tr style={{ backgroundColor: lightBg, borderBottom: '1px solid #eee' }}>
-              <td style={{ padding: '10px' }}>Functional medicine nutrition chart</td>
-              <td style={{ padding: '10px', textAlign: 'center' }}>1</td>
-              <td style={{ padding: '10px', textAlign: 'right' }}>{data.services.nutritionChart.toFixed(2)}</td>
-            </tr>
-          )}
-          {data.services.therapy > 0 && (
-            <tr style={{ backgroundColor: 'white', borderBottom: '1px solid #eee' }}>
-              <td style={{ padding: '10px' }}>Therapy session</td>
-              <td style={{ padding: '10px', textAlign: 'center' }}>1</td>
-              <td style={{ padding: '10px', textAlign: 'right' }}>{data.services.therapy.toFixed(2)}</td>
-            </tr>
-          )}
-          {data.services.package > 0 && (
-            <tr style={{ backgroundColor: lightBg, borderBottom: '1px solid #eee' }}>
-              <td style={{ padding: '10px' }}>Integrative Package</td>
-              <td style={{ padding: '10px', textAlign: 'center' }}>1</td>
-              <td style={{ padding: '10px', textAlign: 'right' }}>{data.services.package.toFixed(2)}</td>
-            </tr>
-          )}
+          {[
+            { key: 'consultation', label: 'Consultation fees' },
+            { key: 'acupuncture', label: 'Acupuncture' },
+            { key: 'nutritionChart', label: 'Functional medicine nutrition chart' },
+            { key: 'therapy', label: 'Therapy session' },
+            { key: 'package', label: 'Integrative Package' },
+            { key: 'medicinesHerbalSyrup', label: 'Medicines (Herbal Syrup)' },
+            { key: 'medicinesFlowerRemedies', label: 'Medicines (Flower remedies spray)' },
+            { key: 'medicinesBiochemicTablets', label: 'Medicines (Biochemic tablets)' },
+            { key: 'medicinesDrops', label: 'Medicines (Drops)' },
+            { key: 'electroTherapy', label: 'Electro therapy (IFT/ US/ Shockwave)' },
+            { key: 'physiotherapy', label: 'Physiotherapy' },
+            { key: 'massageTherapy', label: 'Massage therapy' },
+            { key: 'neurotherapy', label: 'Neurotherapy' },
+            { key: 'ivNutrition', label: 'IV Nutrition' },
+            { key: 'cuppingHijama', label: 'Cupping & Hijama' },
+            { key: 'basti', label: 'Basti' },
+            { key: 'shirodhara', label: 'Shirodhara' },
+            { key: 'prp', label: 'PRP' }
+          ].map((service, idx) => {
+            const val = (data.services && data.services[service.key]) || 0;
+            if (val <= 0) return null;
+            return (
+              <tr key={service.key} style={{ backgroundColor: idx % 2 === 0 ? lightBg : 'white', borderBottom: '1px solid #eee' }}>
+                <td style={{ padding: '10px' }}>{service.label}</td>
+                <td style={{ padding: '10px', textAlign: 'center' }}>1</td>
+                <td style={{ padding: '10px', textAlign: 'right' }}>{Number(val).toFixed(2)}</td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
 

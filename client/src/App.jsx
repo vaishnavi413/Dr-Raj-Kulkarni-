@@ -6,6 +6,48 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ReceiptView from './components/ReceiptView';
 import './index.css';
 
+const defaultServices = {
+  consultation: 0,
+  acupuncture: 0,
+  nutritionChart: 0,
+  therapy: 0,
+  package: 0,
+  medicinesHerbalSyrup: 0,
+  medicinesFlowerRemedies: 0,
+  medicinesBiochemicTablets: 0,
+  medicinesDrops: 0,
+  electroTherapy: 0,
+  physiotherapy: 0,
+  massageTherapy: 0,
+  neurotherapy: 0,
+  ivNutrition: 0,
+  cuppingHijama: 0,
+  basti: 0,
+  shirodhara: 0,
+  prp: 0
+};
+
+const servicesList = [
+  { name: 'consultation', label: 'Consultation fees (₹)' },
+  { name: 'acupuncture', label: 'Acupuncture (₹)' },
+  { name: 'nutritionChart', label: 'Functional medicine nutrition chart (₹)' },
+  { name: 'therapy', label: 'Therapy session (₹)' },
+  { name: 'package', label: 'Integrative Package (₹)' },
+  { name: 'medicinesHerbalSyrup', label: 'Medicines (Herbal Syrup) (₹)' },
+  { name: 'medicinesFlowerRemedies', label: 'Medicines (Flower remedies spray) (₹)' },
+  { name: 'medicinesBiochemicTablets', label: 'Medicines (Biochemic tablets) (₹)' },
+  { name: 'medicinesDrops', label: 'Medicines (Drops) (₹)' },
+  { name: 'electroTherapy', label: 'Electro therapy (IFT/ US/ Shockwave) (₹)' },
+  { name: 'physiotherapy', label: 'Physiotherapy (₹)' },
+  { name: 'massageTherapy', label: 'Massage therapy (₹)' },
+  { name: 'neurotherapy', label: 'Neurotherapy (₹)' },
+  { name: 'ivNutrition', label: 'IV Nutrition (₹)' },
+  { name: 'cuppingHijama', label: 'Cupping & Hijama (₹)' },
+  { name: 'basti', label: 'Basti (₹)' },
+  { name: 'shirodhara', label: 'Shirodhara (₹)' },
+  { name: 'prp', label: 'PRP (₹)' }
+];
+
 const App = () => {
   const [formData, setFormData] = useState({
     receiptNo: '',
@@ -13,13 +55,7 @@ const App = () => {
     patientName: '',
     age: '',
     gender: 'Male',
-    services: {
-      consultation: 0,
-      acupuncture: 0,
-      nutritionChart: 0,
-      therapy: 0,
-      package: 0
-    },
+    services: { ...defaultServices },
     treatmentFor: '',
     total: 0
   });
@@ -31,33 +67,35 @@ const App = () => {
   
   const receiptRef = useRef();
   
+  const resetForm = () => {
+    setFormData({
+      receiptNo: '',
+      date: new Date().toISOString().split('T')[0],
+      patientName: '',
+      age: '',
+      gender: 'Male',
+      services: { ...defaultServices },
+      treatmentFor: '',
+      total: 0
+    });
+    setEditingId(null);
+    fetchLatestNo();
+  };
+
   const handlePrint = useReactToPrint({
     content: () => receiptRef.current,
     documentTitle: `${formData.receiptNo}-${formData.patientName}`,
     onAfterPrint: () => {
-      // Clear form and fetch next ID automatically
-      setFormData({
-        receiptNo: '',
-        date: new Date().toISOString().split('T')[0],
-        patientName: '',
-        age: '',
-        gender: 'Male',
-        services: { consultation: 0, acupuncture: 0, nutritionChart: 0, therapy: 0, package: 0 },
-        treatmentFor: '',
-        total: 0
-      });
-      setEditingId(null);
-      fetchLatestNo();
+      resetForm();
     }
   });
 
-  const API_URL = import.meta.env.VITE_API_URL || 'https://dr-raj-kulkarni-backend.onrender.com';
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
   const fetchLatestNo = async () => {
     try {
       const res = await axios.get(`${API_URL}/api/receipts/latest-no`);
       const latestNoStr = res.data.latestNo;
-      // Extract number, increment and format
       const parts = latestNoStr.split('-');
       const num = parseInt(parts[2] || 0) + 1;
       const newNo = `DRK-2026-${num.toString().padStart(3, '0')}`;
@@ -78,7 +116,10 @@ const App = () => {
   };
 
   const loadReceipt = (receipt) => {
-    setFormData(receipt);
+    setFormData({
+      ...receipt,
+      services: { ...defaultServices, ...(receipt.services || {}) }
+    });
     setEditingId(receipt._id);
     setShowHistory(false);
   };
@@ -109,7 +150,7 @@ const App = () => {
     
     setFormData(prev => {
       const newServices = { ...prev.services, [name]: numValue };
-      const newTotal = Object.values(newServices).reduce((acc, curr) => acc + curr, 0);
+      const newTotal = Object.values(newServices).reduce((acc, curr) => acc + (parseFloat(curr) || 0), 0);
       return {
         ...prev,
         services: newServices,
@@ -126,7 +167,7 @@ const App = () => {
         await axios.put(`${API_URL}/api/receipts/${editingId}`, formData);
       } else {
         const res = await axios.post(`${API_URL}/api/receipts`, formData);
-        setEditingId(res.data._id); // Transitions into edit mode for this new receipt
+        setEditingId(res.data._id);
       }
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
@@ -176,7 +217,7 @@ const App = () => {
             </div>
             <div className="input-group">
               <label>Date</label>
-              <input type="date" name="date" value={formData.date} onChange={handleInputChange} required />
+              <input type="date" name="date" value={formData.date ? formData.date.split('T')[0] : ''} onChange={handleInputChange} required />
             </div>
           </div>
 
@@ -202,30 +243,25 @@ const App = () => {
 
           <h3>Services Availed</h3>
           <div style={{ background: 'rgba(255,255,255,0.5)', padding: '1.5rem', borderRadius: '15px', marginBottom: '2rem' }}>
-            <div className="input-group">
-              <label>Consultation fees (₹)</label>
-              <input type="number" name="consultation" value={formData.services.consultation} onChange={handleServiceChange} min="0" placeholder="0" />
-            </div>
-            <div className="input-group">
-              <label>Acupuncture (₹)</label>
-              <input type="number" name="acupuncture" value={formData.services.acupuncture} onChange={handleServiceChange} min="0" placeholder="0" />
-            </div>
-            <div className="input-group">
-              <label>Functional medicine nutrition chart (₹)</label>
-              <input type="number" name="nutritionChart" value={formData.services.nutritionChart} onChange={handleServiceChange} min="0" placeholder="0" />
-            </div>
-            <div className="input-group">
-              <label>Therapy session (₹)</label>
-              <input type="number" name="therapy" value={formData.services.therapy} onChange={handleServiceChange} min="0" placeholder="0" />
-            </div>
-            <div className="input-group">
-              <label>Integrative Package (₹)</label>
-              <input type="number" name="package" value={formData.services.package} onChange={handleServiceChange} min="0" placeholder="0" />
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1rem' }}>
+              {servicesList.map(item => (
+                <div className="input-group" key={item.name} style={{ marginBottom: 0 }}>
+                  <label style={{ fontSize: '0.85rem' }}>{item.label}</label>
+                  <input 
+                    type="number" 
+                    name={item.name} 
+                    value={formData.services?.[item.name] || ''} 
+                    onChange={handleServiceChange} 
+                    min="0" 
+                    placeholder="0" 
+                  />
+                </div>
+              ))}
             </div>
 
-            <div className="input-group">
+            <div className="input-group" style={{ marginTop: '1.5rem' }}>
               <label>Treatment For</label>
-              <input type="text" name="treatmentFor" value={formData.treatmentFor} onChange={handleInputChange} placeholder="Enter reason for treatment" />
+              <input type="text" name="treatmentFor" value={formData.treatmentFor || ''} onChange={handleInputChange} placeholder="Enter reason for treatment" />
             </div>
             
             <div style={{ marginTop: '1.5rem', paddingTop: '1rem', borderTop: '2px dashed var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -235,7 +271,7 @@ const App = () => {
           </div>
 
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
-            <button type="button" className="btn" style={{ background: '#e2e8f0', color: 'var(--text)' }} onClick={() => { setEditingId(null); setFormData({ receiptNo: '', date: new Date().toISOString().split('T')[0], patientName: '', age: '', gender: 'Male', services: { consultation: 0, acupuncture: 0, nutritionChart: 0, therapy: 0, package: 0 }, treatmentFor: '', total: 0 }); fetchLatestNo(); }}>
+            <button type="button" className="btn" style={{ background: '#e2e8f0', color: 'var(--text)' }} onClick={resetForm}>
               <Undo2 size={18} /> {editingId ? 'Cancel Edit' : 'Reset'}
             </button>
             <button type="submit" className="btn btn-primary" disabled={loading}>
